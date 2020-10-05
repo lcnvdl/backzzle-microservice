@@ -1,0 +1,19 @@
+{
+    "logLevel": "debug",
+    "amqp": {
+        "host": "localhost",
+        "protocol": "amqp://",
+        "virtualHost": null,
+        "port": null,
+        "user": null,
+        "password": null,
+        "enabled": true
+    },
+    "express": {
+        "enabled": false,
+        "port": 3500,
+        "cors": true,
+        "json": true,
+        "urlencoded": true
+    }
+}
