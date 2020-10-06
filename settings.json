@@ -1,19 +1,24 @@
 {
     "logLevel": "debug",
-    "amqp": {
-        "host": "localhost",
-        "protocol": "amqp://",
-        "virtualHost": null,
-        "port": null,
-        "user": null,
-        "password": null,
-        "enabled": true
-    },
     "express": {
-        "enabled": false,
         "port": 3500,
+        "enabled": true,
         "cors": true,
+        "raw": false,
         "json": true,
         "urlencoded": true
+    },
+    "amqp": {
+        "protocol": "amqp",
+        "user": "user",
+        "password": "bitnami",
+        "host": "localhost",
+        "port": 5672,
+        "enabled": true,
+        "communicationModel": {
+            "name": "1<->1..N",
+            "exchangeName": "backzzle-exchange-demo",
+            "mode": "receiver"
+        }
     }
 }

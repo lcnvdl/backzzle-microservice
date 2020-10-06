@@ -1,33 +1,42 @@
-/** @typedef {import("node-essential/src/managers/system/controllers.manager")} ControllersManager */
 /** @typedef {import("node-essential/src/managers/system/injection.manager")} InjectionManager */
 
 const essential = require("node-essential");
+const { loadSettings } = require("./backzzle/main");
+
+const { start } = require("emvicify");
+const settingsFile = loadSettings(process);
+const expressSettings = {
+    bodyParserJson: settingsFile.express.json,
+    bodyParserUrlencoded: settingsFile.express.urlencoded,
+    bodyParserRaw: settingsFile.express.raw,
+    cors: settingsFile.express.cors
+};
+
+const Engines = require("emvicify").engines;
+
+const engines = [];
+
+if (settingsFile.express.enabled) {
+    const express = new Engines.ExpressEngine(null, settingsFile.express.port, {});
+    engines.push(express);
+}
+
+if (settingsFile.amqp.enabled) {
+    const amqp = require("amqplib");
+    const amqpSettings = settingsFile.amqp;
+    const rabbitEngine = new Engines.RabbitMQEngine(amqp, amqpSettings);
+    engines.push(rabbitEngine);
+}
 
 /** @type {InjectionManager} */
 const injection = new essential.Managers.System.InjectionManager();
 
-/** @type {ControllersManager} */
-const manager = new essential.Managers.System.ControllersManager(injection);
+/** @todo If you want to use your own logger, just replace this line. */
+injection.add("log", () => new (require("./backzzle/default-logger"))());
 
-//  Main loop
-(async function main() {
-    const { loadControllers, loadExpress, loadSettings, onReceiveMessage } = require("./backzzle/main");
-
-    const settings = loadSettings(process);
-    injection.add("settings", () => settings);
-
-    /** @todo If you want to use your own logger, just replace this line. */
-    injection.add("log", () => new (require("./backzzle/default-logger"))());
-
-    await loadControllers(injection, manager);
-
-    if (settings.amqp && settings.amqp.enabled) {
-        const RabbitEngine = require("./backzzle/rabbit-engine");
-        const engine = new RabbitEngine(injection);
-        engine.initialize(onReceiveMessage);
-    }
-
-    /*if (settings.express && settings.express.enabled) {
-        loadExpress(injection);
-    }*/
-})();
+start(process.cwd(), settingsFile.express.port, { settingsFile, expressSettings, engines }).then(() => {
+    console.log(`Listening on port ${settingsFile.express.port}`);
+}, err => {
+    console.error("Application failed", err);
+    process.exit(1);
+});
