@@ -1,6 +1,6 @@
 const { AbstractRouter, AmqpRouter, ExpressRouter } = require("emvicify/routers");
 
-class BaseRouter extends AbstractRouter {
+class MultiRouter extends AbstractRouter {
     constructor(objects) {
         super(objects);
 
@@ -35,9 +35,9 @@ class BaseRouter extends AbstractRouter {
         throw new Error("Abstract method");
     }
 
-    post(url, action, middlewares, app) {
+    post(url, action, middlewares) {
         if (this.expressRouter) {
-            this.expressRouter.post(url, action, middlewares, app);
+            this.expressRouter.post(url, action, middlewares);
         }
 
         if (this.amqpRouter) {
@@ -45,9 +45,9 @@ class BaseRouter extends AbstractRouter {
         }
     }
 
-    get(url, action, middlewares, app) {
+    get(url, action, middlewares) {
         if (this.expressRouter) {
-            this.expressRouter.get(url, action, middlewares, app);
+            this.expressRouter.get(url, action, middlewares);
         }
 
         if (this.amqpRouter) {
@@ -56,4 +56,4 @@ class BaseRouter extends AbstractRouter {
     }
 }
 
-module.exports = BaseRouter;
+module.exports = MultiRouter;

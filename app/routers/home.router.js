@@ -1,6 +1,6 @@
-const BaseRouter = require("../base/base-router");
+const MultiRouter = require("../../backzzle/base/multi-router");
 
-class HomeRouter extends BaseRouter {
+class HomeRouter extends MultiRouter {
     constructor({ settings, controllers, middlewares, routerSettings }) {
         super({ settings, controllers, middlewares, routerSettings });
     }
