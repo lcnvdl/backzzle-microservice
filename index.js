@@ -6,9 +6,9 @@ const { loadSettings } = require("./backzzle/main");
 const { start } = require("emvicify");
 const settingsFile = loadSettings(process);
 const expressSettings = {
-    bodyParserJson: settingsFile.express.json,
-    bodyParserUrlencoded: settingsFile.express.urlencoded,
-    bodyParserRaw: settingsFile.express.raw,
+    json: settingsFile.express.json,
+    bodyParserUrlencoded: false,
+    bodyParserRaw: false,
     cors: settingsFile.express.cors
 };
 
@@ -17,7 +17,7 @@ const Engines = require("emvicify").engines;
 const engines = [];
 
 if (settingsFile.express.enabled) {
-    const express = new Engines.ExpressEngine(null, settingsFile.express.port, {});
+    const express = new Engines.ExpressEngine(null, settingsFile.express.port, expressSettings);
     engines.push(express);
 }
 

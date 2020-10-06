@@ -1,12 +1,12 @@
-const { ExpressRouter } = require("emvicify/routers");
+const BaseRouter = require("../base/base-router");
 
-class HomeRouter extends ExpressRouter {
+class HomeRouter extends BaseRouter {
     constructor({ settings, controllers, middlewares, routerSettings }) {
         super({ settings, controllers, middlewares, routerSettings });
     }
 
     registerActions() {
-        this.get("home/action", (req, res) => this.controllers.home.action({ req, res }));
+        this.get("home/action", () => this.controllers.home.action());
     }
 }
 
