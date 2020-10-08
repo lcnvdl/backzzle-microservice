@@ -6,6 +6,7 @@ class HomeController extends BaseController {
     }
 
     action() {
+        console.log("Home/action called");
         return { result: true };
     }
 }
