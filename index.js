@@ -1,4 +1,4 @@
-const Backzzle = require("./backzzle/backzzle");
+const { Backzzle } = require("backzzle");
 
 const instance = new Backzzle();
 

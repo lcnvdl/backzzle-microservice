@@ -21,6 +21,7 @@
   "homepage": "https://github.com/lcnvdl/backzzle-microservice#readme",
   "dependencies": {
     "amqplib": "^0.6.0",
+    "backzzle": "0.0.8",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "emvicify": "git+https://github.com/lcnvdl/emvicify.git",

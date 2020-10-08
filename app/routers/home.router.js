@@ -1,4 +1,4 @@
-const MultiRouter = require("../../backzzle/base/multi-router");
+const { MultiRouter } = require("backzzle");
 
 class HomeRouter extends MultiRouter {
     constructor({ settings, controllers, middlewares, routerSettings }) {
