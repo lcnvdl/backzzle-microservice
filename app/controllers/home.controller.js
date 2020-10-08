@@ -6,7 +6,7 @@ class HomeController extends BaseController {
     }
 
     action() {
-        console.log("Home/action called");
+        this.injection.get("log").info("Home/action called");
         return { result: true };
     }
 }

@@ -5,6 +5,7 @@ const instance = new Backzzle();
 instance.start().then(() => {
     instance.injection.get("log").info("Running");
 
+    /** @todo Delete the amqpTest functino call. */
     amqpTest();
 }, err => {
     instance.injection.get("log").error("Application failed", err);
@@ -12,16 +13,17 @@ instance.start().then(() => {
 });
 
 /** 
+ * @deprecated
  * @todo Delete this function. 
  **/
 async function amqpTest() {
-    console.log("AMQP TEST");
+    instance.injection.get("log").debug("AMQP TEST");
 
     const amqplib = require("amqplib");
     const connection = await amqplib.connect("amqp://user:bitnami@localhost:5672");
     const channel = await connection.createChannel();
 
-    console.log("Channel creado");
+    instance.injection.get("log").debug("Channel creado");
 
     const name = "backzzle-exchange-demo";
 
@@ -43,7 +45,7 @@ async function amqpTest() {
     channel.consume(q.queue, msg => {
         if (msg && msg.properties.correlationId === id) {
             const response = JSON.parse(msg.content.toString());
-            console.log("Respuesta", response);
+            instance.injection.get("log").debug("Respuesta", response);
         }
     }, {
         noAck: true
@@ -57,11 +59,11 @@ async function amqpTest() {
             replyTo: q.queue,
             correlationId: id
         });
-        console.log("Test message sent");
+        instance.injection.get("log").debug("Test message sent");
     }, 500);
 
     setTimeout(() => {
         connection.close();
-        console.log("Channel cerrado");
+        instance.injection.get("log").debug("Channel cerrado");
     }, 5000);
 }
