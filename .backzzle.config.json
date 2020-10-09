@@ -1,0 +1,4 @@
+{
+    "amqp": "amqp://user:bitnami@localhost:5672",
+    "apikey": ""
+}
